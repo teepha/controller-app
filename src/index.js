@@ -7,12 +7,14 @@ import connectToDB from "./config/db";
 const app = express();
 const port = config.port;
 
-connectToDB().then(() => {
-  console.log("Connected to DB...");
-  app.listen(port, () => {
-    console.log(`Listening on port ${port}...`);
-  });
-});
+connectToDB()
+  .then(() => {
+    console.log("Connected to DB...");
+    app.listen(port, () => {
+      console.log(`Listening on port ${port}...`);
+    });
+  })
+  .catch(error => console.log("An error occured. Unable to start server."));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -22,4 +24,3 @@ app.use(router);
 app.use((err, req, res, next) => {
   res.status(err.status || 500).send({ error: err.message });
 });
-
